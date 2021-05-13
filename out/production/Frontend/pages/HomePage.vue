@@ -45,20 +45,18 @@
 <!--      </el-aside>-->
 
 <!--    </el-container>-->
-<!--    <AudioView></AudioView>-->
-    <OldAudioView></OldAudioView>
+    <AudioView></AudioView>
+
   </div>
 </template>
 
 <script>
   import AutoCameraView from '../components/AutoCameraView'
   import AudioView from '../components/AudioView'
-  import OldAudioView from '../components/OldAudioView'
-
 
   export default {
     name: 'HomePage',
-    components:{OldAudioView, AutoCameraView, AudioView},
+    components:{AutoCameraView, AudioView},
     data () {
       return {
         SearchInput:'',
@@ -67,6 +65,10 @@
       }
     },
     methods: {
+      audioTransfer(val) {
+        this.SearchInput = val;
+        console.log(this.SearchInput);
+      }
     },
     mounted () {
       console.log("In mounted");
