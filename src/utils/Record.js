@@ -36,4 +36,9 @@ export default class Record {
       console.log("play record failed!" + e);
     }
   }
+
+  getBlob(){
+    let self = this;
+    return self.recorder.getBlob();
+  }
 }

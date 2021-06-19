@@ -44,7 +44,7 @@
        </div>
      </el-aside>
 
-<!--    </el-container>-->
+    </el-container>
     <!--AudioView></AudioView-->
     <!--OldAudioView></OldAudioView-->
     <Record></Record>
