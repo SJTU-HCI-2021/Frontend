@@ -61,11 +61,21 @@
         self.recorder.play(self.audio);
         let Base64 = require('js-base64').Base64
         let str = self.recorder.getBlob();
-        let tmp = Base64.encode(str)  // 5r2Y6auY
-        //console.log(tmp)
-        let mp3Blob = tmp;
-        let fd = new FormData();
-        fd.append('audio',tmp)
+        //let tmp = Base64.encode(str)
+        //let mp3Blob = tmp;
+        let mp3Blob = str;
+        let reader = new window.FileReader();
+        reader.readAsDataURL(mp3Blob);
+        let base64data=''
+        let datalen=mp3Blob.size
+        console.log(datalen)
+        reader.onloadend = function() {
+          base64data = reader.result;
+          console.log(base64data);
+
+        }
+        //let fd = new FormData();
+        //fd.append('audio',tmp)
         let posdata =
               {"format":"wav",
                 "rate":16000,
@@ -73,12 +83,12 @@
                 "channel":1,
                 "token":"24.65397b49a4b009caa5ae9e1eb40f2d7a.2592000.1626707677.282335-24402658",
                 "cuid":"baidu_workshop",
-                "len":4096,
-                "speech":fd
+                "len":datalen,
+                "speech":base64data
               }
-        this.$http.post('/api',posdata).then(res=>{
+        /*this.$http.post('/api',{posdata}).then(res=>{
           console.log(res.data)
-        });
+        });*/
 
         // axios({
         //   headers:{

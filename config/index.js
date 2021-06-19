@@ -6,11 +6,10 @@ const path = require('path')
 
 module.exports = {
   dev: {
-
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {
+    /*proxyTable: {
       '/api':{
         target:'https://vop.baidu.com/',
         changeOrigin: true,
@@ -18,7 +17,7 @@ module.exports = {
           '^/api':'/pro_api'
         }
       }
-    },
+    },*/
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
@@ -36,11 +35,12 @@ module.exports = {
     // in the browser.
     showEslintErrorsInOverlay: false,
 
-    assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    //assetsSubDirectory: 'static',
+    //assetsPublicPath: '/',
     proxyTable: {
          '/': {
               target: 'http://139.198.30.15:8000',
+              //target: 'http://localhost:8000',
               changeOrigin: true,
               pathRewrite: {
                 '^/': '/' 
