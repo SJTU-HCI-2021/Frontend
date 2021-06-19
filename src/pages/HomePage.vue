@@ -45,20 +45,22 @@
 <!--      </el-aside>-->
 
 <!--    </el-container>-->
-<!--    <AudioView></AudioView>-->
-    <OldAudioView></OldAudioView>
+    <!--AudioView></AudioView-->
+    <!--OldAudioView></OldAudioView-->
+    <Record></Record>
   </div>
 </template>
 
 <script>
   import AutoCameraView from '../components/AutoCameraView'
   import AudioView from '../components/AudioView'
+  import Record from '../components/Record'
   import OldAudioView from '../components/OldAudioView'
 
 
   export default {
     name: 'HomePage',
-    components:{OldAudioView, AutoCameraView, AudioView},
+    components:{OldAudioView, AutoCameraView, AudioView,Record},
     data () {
       return {
         SearchInput:'',

@@ -15,8 +15,10 @@
   },
   "dependencies": {
     "@types/dom-mediacapture-record": "^1.0.7",
+    "axios": "^0.21.1",
     "element-ui": "^2.15.1",
     "vue": "^2.5.2",
+    "vue-axios": "^3.2.4",
     "vue-router": "^3.0.1",
     "vue-speech": "^0.1.0"
   },
