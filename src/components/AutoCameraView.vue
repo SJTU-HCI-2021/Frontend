@@ -22,7 +22,7 @@
     },
 
     created: function () {//这里是定时器
-    setInterval(this.timer, 1000);
+    setInterval(this.timer, 10000);
     },
      
     methods: {
@@ -59,15 +59,19 @@
         var url = c.toDataURL('image/jpeg',1);
         console.log(url)
         var data = {'recognize_img' : url};
-        this.axios.post("http://139.198.30.15:8000",  data,{
-          headers:{
-            'Content-Type': "application/json;charset=utf-8",
-            'Access-Control-Allow-Origin': '*'
-             //或其他格式
-          }
-        }).then(function(res){
-          console.log(res);
-        })
+        // this.axios.post("http://139.198.30.15:8000",  data,{
+        //   headers:{
+        //     'Content-Type': "application/json;charset=utf-8",
+        //     'Access-Control-Allow-Origin': '*'
+        //      //或其他格式
+        //   }
+        // }).then(function(res){
+        //   console.log(res);
+        // })
+        
+        this.$http.post('/api',data).then(res=>{
+          console.log(res)
+        });
       },
       
     }

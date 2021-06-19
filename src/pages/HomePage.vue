@@ -48,7 +48,7 @@
     <!--AudioView></AudioView-->
     <!--OldAudioView></OldAudioView-->
     <Record></Record>
-   </el-container>
+   <!-- </el-container> -->
 
   </div>
 </template>
