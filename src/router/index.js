@@ -11,10 +11,10 @@ export default new Router({
       name: 'HomePage',
       component: HomePage
     },
-    {
-      path: '/Camera',
-      name: 'AutoCameraView',
-      component: AutoCameraView
-    }
+    // {
+    //   path: '/Camera',
+    //   name: 'AutoCameraView',
+    //   component: AutoCameraView
+    // }
   ]
 })
