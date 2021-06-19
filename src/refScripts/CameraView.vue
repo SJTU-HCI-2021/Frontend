@@ -41,6 +41,8 @@
         ctx.drawImage(this.$refs['video'], 0, 0, 640, 480)
         // 转base64格式、图片格式转换、图片质量压缩---支持两种格式image/jpeg+image/png
         let imgBase64 = this.$refs['canvas'].toDataURL('image/jpeg', 0.7)
+        console.log(imgBase64);
+        console.error(imgBase64);
 
         /**------------到这里为止，就拿到了base64位置的地址，后面是下载功能----------*/
 
