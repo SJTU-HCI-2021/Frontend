@@ -28,6 +28,19 @@ module.exports = {
     // in the browser.
     showEslintErrorsInOverlay: false,
 
+    assetsSubDirectory: 'static',
+    assetsPublicPath: '/',
+    proxyTable: {
+         '/': {
+              target: 'http://139.198.30.15:8000',
+              changeOrigin: true,
+              pathRewrite: {
+                '^/': '/' 
+              }
+            }
+    },
+
+
     /**
      * Source Maps
      */

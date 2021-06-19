@@ -48,27 +48,27 @@
 
           // 由字节转换为KB 判断大小
         let str = imgBase64.replace('data:image/jpeg;base64,', '')
-let strLength = str.length
-let fileLength = parseInt(strLength - (strLength / 8) * 2)　　　 // 图片尺寸  用于判断
-let size = (fileLength / 1024).toFixed(2)
-console.log(size) 　　  // 上传拍照信息  调用接口上传图片 .........
+        let strLength = str.length
+        let fileLength = parseInt(strLength - (strLength / 8) * 2)　　　 // 图片尺寸  用于判断
+        let size = (fileLength / 1024).toFixed(2)
+        console.log(size) 　　  // 上传拍照信息  调用接口上传图片 .........
 
-// 保存到本地
-let ADOM = document.createElement('a')
-ADOM.href = this.headImgSrc
-ADOM.download = new Date().getTime() + '.jpeg'
-ADOM.click()
-},
-// 关闭摄像头
-closeCamera () {
-if (!this.$refs['video'].srcObject) return
-let stream = this.$refs['video'].srcObject
-let tracks = stream.getTracks()
-tracks.forEach(track => {
-track.stop()
-})
-this.$refs['video'].srcObject = null
-},
-}
-}
+        // 保存到本地
+        let ADOM = document.createElement('a')
+        ADOM.href = this.headImgSrc
+        ADOM.download = new Date().getTime() + '.jpeg'
+        ADOM.click()
+      },
+      // 关闭摄像头
+      closeCamera () {
+        if (!this.$refs['video'].srcObject) return
+        let stream = this.$refs['video'].srcObject
+        let tracks = stream.getTracks()
+        tracks.forEach(track => {
+        track.stop()
+        })
+        this.$refs['video'].srcObject = null
+      },
+    }
+  }
 </script>
