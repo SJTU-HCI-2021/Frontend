@@ -1,24 +1,35 @@
 <template>
-  <div>
+  <div :style="videoStyle">
     <!--图片展示-->
-    <video
+    <video style="position: absolute;"
       id="myvideo"
       crossOrigin="Anonymous"
       ref="video"
       width="100%"
       height="100%"
       autoplay
-    ></video>
+    >
+    </video>
+    <DrawRect style="position: absolute">
+    </DrawRect>
   </div>
-</template>
 
+</template>
 <script>
+
+import vue from 'vue';
+
 import TrackingSystem from './TrackingSystem'
+import DrawRect from './DrawRect'
+
+export let videoWidth = 0, videoHeight = 0;
 
 export default {
+  components: {DrawRect},
   data() {
     return {
-      trackingSystem: new TrackingSystem()
+      trackingSystem: new TrackingSystem(),
+      videoStyle: ''
     };
   },
   mounted() {
@@ -53,6 +64,13 @@ export default {
     },
 
     timer: function () {
+      if(this.videoStyle === '') {
+        let v = document.getElementById("myvideo");
+        videoWidth = v.videoWidth;
+        videoHeight = v.videoHeight;
+        this.videoStyle = ' position: relative;  width:' + v.videoWidth
+          + ' px; height:' + v.videoWidth + 'px'; //video浮动定位居中显示
+      }
       //写成timer()也可
       this.photograph();
       // console.log("time")//打印查看效果

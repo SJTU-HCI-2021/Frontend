@@ -63,10 +63,11 @@ import AutoCameraView from "../components/AutoCameraView";
 import AudioView from "../components/AudioView";
 import Record from "../components/Record";
 import OldAudioView from "../components/OldAudioView";
+import DrawRect from "../components/DrawRect"
 
 export default {
   name: "HomePage",
-  components: { OldAudioView, AutoCameraView, AudioView, Record },
+  components: { OldAudioView, AutoCameraView, AudioView, Record, DrawRect },
   data() {
     return {
       SearchInput: "",
