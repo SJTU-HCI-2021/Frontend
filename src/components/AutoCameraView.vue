@@ -13,9 +13,13 @@
 </template>
 
 <script>
+import TrackingSystem from './TrackingSystem'
+
 export default {
   data() {
-    return {};
+    return {
+      trackingSystem: new TrackingSystem()
+    };
   },
   mounted() {
     this.callCamera();
@@ -70,10 +74,16 @@ export default {
       data = JSON.stringify(data);
 
       this.$http.post("/api", data).then((res) => {
-        // console.log(res)
-        // console.log(res.data)
-        var dt = res.data;
-        // console.log(dt[0].output.detection_boxes)
+        let o = res.data[0].output;
+        console.log(o);
+        this.trackingSystem.StartAddTrackData();
+        for (let i = 0; i < o.detection_boxes.length; i++) {
+          let reliability = o.detection_scores[i];
+          let classId = o.detection_classes[i];
+          let box = o.detection_boxes[i];
+          this.trackingSystem.AddTrackData(reliability, classId, box[0], box[1], box[2], box[3]);
+        }
+        this.trackingSystem.EndAddTrackData();
       });
     },
   },
