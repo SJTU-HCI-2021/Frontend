@@ -38,14 +38,22 @@ module.exports = {
     //assetsSubDirectory: 'static',
     //assetsPublicPath: '/',
     proxyTable: {
-         '/': {
-              target: 'http://139.198.30.15:8000',
-              //target: 'http://localhost:8000',
-              changeOrigin: true,
-              pathRewrite: {
-                '^/': '/' 
-              }
-            }
+      '/api': {
+        target: 'http://139.198.30.15:8000',
+        //target: 'http://localhost:8000',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': '/api' 
+        }
+      },
+      '/audio': {
+        target: 'https://vop.baidu.com/pro_api',
+        //target: 'http://localhost:8000',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/audio': '/audio' 
+        }
+      },
     },
 
 

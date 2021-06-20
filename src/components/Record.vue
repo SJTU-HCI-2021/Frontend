@@ -15,6 +15,10 @@
   import Record from "../utils/Record";
   import axios from 'axios';
 
+  function send(){
+        alert(1)
+  }
+
   export default {
     name: "Record",
     data() {
@@ -53,8 +57,31 @@
         });
         //this.axios.post('')
       },
-      play: function() {
-        console.log("play record now.");
+      
+    getimg(file) {
+      return new Promise((resolve, reject) => {
+        try {
+          var reader = new FileReader()
+          if (file) {
+            reader.onloadend = function(e) {
+              resolve(reader.result)
+            }
+            reader.onerror = function() {
+              reject("load file error")
+            }
+            reader.readAsDataURL(file)
+          } else {
+            reject("file not found")
+          }
+        } catch (e) {
+          reject("file not found")
+        }
+      })
+    },
+
+    play() {
+
+      console.log("play record now.");
         let self = this;
         self.isFinished = true;
         self.audio = document.querySelector("audio");
@@ -64,19 +91,17 @@
         //let tmp = Base64.encode(str)
         //let mp3Blob = tmp;
         let mp3Blob = str;
-        let reader = new window.FileReader();
-        reader.readAsDataURL(mp3Blob);
-        let base64data=''
-        let datalen=mp3Blob.size
-        console.log(datalen)
-        reader.onloadend = function() {
-          base64data = reader.result;
-          console.log(base64data);
+        this.getimg(mp3Blob);
 
-        }
         //let fd = new FormData();
         //fd.append('audio',tmp)
-        let posdata =
+        
+      this.getimg(mp3Blob)
+        .then(res => {
+          let datalen=mp3Blob.size
+        console.log(datalen)
+        res = res.slice(23)
+          let posdata =
               {"format":"wav",
                 "rate":16000,
                 "dev_pid":80001,
@@ -84,32 +109,21 @@
                 "token":"24.65397b49a4b009caa5ae9e1eb40f2d7a.2592000.1626707677.282335-24402658",
                 "cuid":"baidu_workshop",
                 "len":datalen,
-                "speech":base64data
+                "speech":res
               }
-        /*this.$http.post('/api',{posdata}).then(res=>{
-          console.log(res.data)
-        });*/
+          this.$http.post('/audio',posdata).then(res=>{
+              console.log(res.data)
+          });
+        })
+        .catch(e => {
+          console.log(e)
+        })
 
-        // axios({
-        //   headers:{
-        //   'Content-Type': 'application/json'
-        //   },
-        //   method:'post',
-        //     url:'https://vop.baidu.com/pro_api',
-        //     data:
-        //   {"format":"wav",
-        //     "rate":16000,
-        //     "dev_pid":80001,
-        //     "channel":1,
-        //     "token":"24.65397b49a4b009caa5ae9e1eb40f2d7a.2592000.1626707677.282335-24402658",
-        //     "cuid":"baidu_workshop",
-        //     "len":4096,
-        //     "speech":fd
-        //   }
-        // }).then(res=>{
-        //   console.log(res.data)
-        // })
-      }
+      // 如果能支持 async await 
+      //let res = await getimg(file)
+      // ajax
+    }
+
     }
   };
 </script>
