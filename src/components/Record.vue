@@ -8,12 +8,17 @@
       <h2>Current voice player is:</h2>
       <audio controls autoplay></audio>
     </div>
+    <div class="display-audio" v-show="isFinished">
+      <h2>识别结果:</h2>
+      <h3>{{ this.msg }}</h3>
+    </div>
   </div>
 </template>
 
 <script>
 import Record from "../utils/Record";
 import axios from "axios";
+import { HZRecorder } from "./HZRecorder.js";
 
 function send() {
   alert(1);
@@ -26,14 +31,35 @@ export default {
       isFinished: false,
       audio: "",
       recorder: new Record(),
+      // recorder: "",
+      msg: "",
     };
   },
+  mounted() {
+    this.initAudio();
+  },
   methods: {
+    initAudio() {
+      var _this = this;
+      navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
+      navigator.getUserMedia(
+        { audio: true },
+        function (stream) {
+          let recorder = new HZRecorder(stream);
+          _this.recorder = recorder;
+          console.log("初始化完成");
+        },
+        function (e) {
+          console.log("No live audio input: " + e);
+        }
+      );
+    },
+
     startRecord: function () {
       console.log("start to record now.");
       let self = this;
       self.isFinished = false;
-      self.recorder.startRecord({
+      self.recorder.start({
         success: (res) => {
           console.log("start record successfully.");
         },
@@ -41,12 +67,13 @@ export default {
           console.log("start record failed.");
         },
       });
+      // this.recorder.start();
     },
     stopRecord: function () {
       console.log("stop record now.");
       let self = this;
       self.isFinished = false;
-      self.recorder.stopRecord({
+      self.recorder.stop({
         success: (res) => {
           //此处可以获取音频源文件(res)，用于上传等操作
           console.log("stop record successfully.");
@@ -55,10 +82,11 @@ export default {
           console.log("stop record failed.");
         },
       });
+      // this.recorder.stop();
       //this.axios.post('')
     },
 
-    getimg(file) {
+    get_audio(file) {
       return new Promise((resolve, reject) => {
         try {
           var reader = new FileReader();
@@ -90,16 +118,16 @@ export default {
       //let tmp = Base64.encode(str)
       //let mp3Blob = tmp;
       let mp3Blob = str;
-      this.getimg(mp3Blob);
+      this.get_audio(mp3Blob);
 
       //let fd = new FormData();
       //fd.append('audio',tmp)
 
-      this.getimg(mp3Blob)
+      this.get_audio(mp3Blob)
         .then((res) => {
           let datalen = mp3Blob.size;
           console.log(datalen);
-          res = res.slice(23);
+          res = res.split("data:audio/wav;base64,")[1];
           let posdata = {
             format: "wav",
             rate: 16000,
@@ -112,7 +140,9 @@ export default {
             speech: res,
           };
           this.$http.post("/audio", posdata).then((res) => {
-            console.log(res.data);
+            this.msg = res.data.result;
+            console.log(res);
+            console.log(this.msg);
           });
         })
         .catch((e) => {
@@ -120,7 +150,7 @@ export default {
         });
 
       // 如果能支持 async await
-      //let res = await getimg(file)
+      //let res = await get_audio(file)
       // ajax
     },
   },
