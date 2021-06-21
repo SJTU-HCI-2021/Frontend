@@ -22,7 +22,8 @@
 <script>
 import TrackingSystem from "./TrackingSystem";
 import Global from "../utils/Global";
-import axios from 'axios'
+import axios from "axios";
+import { captureRejectionSymbol } from "events";
 
 export let trackingSystem = new TrackingSystem();
 export let canvas, videoStaticImg;
@@ -43,18 +44,11 @@ export default {
     ctx.drawImage(videoStaticImg, 0, 0, videoStaticImg.width, videoStaticImg.height);
     ctx.strokeStyle = "red";
     ctx.lineWidth = 3;
-    // if(objects.length == 0{})
+    Global.OutputContent = objects;
     for (const object of objects) {
-      instance.search_result.push(object.state);
-      console.log("state " + object.state);
       let box = object.box;
       console.log("drawing(uv): ", box.x1, box.y1, box.x2, box.y2);
-      ctx.strokeRect(
-        box.x1,
-        box.y1,
-        box.x2,
-        box.y2
-      );
+      ctx.strokeRect(box.x1, box.y1, box.x2, box.y2);
     }
   },
   resetSearch() {
@@ -113,51 +107,53 @@ export default {
       // url = url.slice(23);
       let data = { recognize_img: url };
       data = JSON.stringify(data);
-      let data2 = {"image":url,
-        "top_num": 10
-      }
+      let data2 = { image: url, top_num: 10 };
       // this.$http.post("/api", data).then((res) => {
-        // let o = res.data[0].output;
-        // console.log(o);
-        // trackingSystem.StartAddTrackData();
-        // for (let i = 0; i < o.detection_boxes.length; i++) {
-        //   let reliability = o.detection_scores[i];
-        //   let classId = o.detection_classes[i];
-        //   let box = o.detection_boxes[i];
-        //   trackingSystem.AddTrackData(
-        //     reliability,
-        //     classId,
-        //     box[0],
-        //     box[1],
-        //     box[2],
-        //     box[3]
-        //   );
-        // }
-        // trackingSystem.EndAddTrackData();
-        // console.log("first picture analyzed");
+      // let o = res.data[0].output;
+      // console.log(o);
+      // trackingSystem.StartAddTrackData();
+      // for (let i = 0; i < o.detection_boxes.length; i++) {
+      //   let reliability = o.detection_scores[i];
+      //   let classId = o.detection_classes[i];
+      //   let box = o.detection_boxes[i];
+      //   trackingSystem.AddTrackData(
+      //     reliability,
+      //     classId,
+      //     box[0],
+      //     box[1],
+      //     box[2],
+      //     box[3]
+      //   );
+      // }
+      // trackingSystem.EndAddTrackData();
+      // console.log("first picture analyzed");
       // });
-      axios.post('https://aip.baidubce.com/rpc/2.0/ai_custom/v1/detection/test_detection_hci?access_token=24.39d0adf98dfb199de17c0c2e5ecb3578.2592000.1626856168.282335-24411081', data2).then((res) => {
-        let o = res.data;
-        //console.log(o);
-        //console.log(o.results)
-        trackingSystem.StartAddTrackData();
-        for (const result of o.results) {
-          let score = result.score;
-          let classId = result.name
-          let box = result.location;
-          //console.log("classId: " + classId + " score: " + score + " box: " + box.left + ", " + box.top + ", " + box.width + ", " + box.height)
-          trackingSystem.AddTrackData(
-            score,
-            classId,
-            box.left,
-            box.top,
-            box.width,
-            box.height
-          );
-        }
-        trackingSystem.EndAddTrackData();
-      });
-
+      axios
+        .post(
+          "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/detection/test_detection_hci?access_token=24.39d0adf98dfb199de17c0c2e5ecb3578.2592000.1626856168.282335-24411081",
+          data2
+        )
+        .then((res) => {
+          let o = res.data;
+          //console.log(o);
+          //console.log(o.results)
+          trackingSystem.StartAddTrackData();
+          for (const result of o.results) {
+            let score = result.score;
+            let classId = result.name;
+            let box = result.location;
+            //console.log("classId: " + classId + " score: " + score + " box: " + box.left + ", " + box.top + ", " + box.width + ", " + box.height)
+            trackingSystem.AddTrackData(
+              score,
+              classId,
+              box.left,
+              box.top,
+              box.width,
+              box.height
+            );
+          }
+          trackingSystem.EndAddTrackData();
+        });
     },
   },
 };

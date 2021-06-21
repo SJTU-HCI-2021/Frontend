@@ -9,12 +9,12 @@
               v-model="SearchInput"
               class="input-with-select"
             >
-              <el-button slot="append" icon="el-icon-search" @click="search"/>
-              <el-button slot="append" icon="el-icon-delete" @click="resetSearch"/>
+              <el-button slot="append" icon="el-icon-search" @click="search" />
+              <el-button slot="append" icon="el-icon-delete" @click="resetSearch" />
             </el-input>
           </div>
-          <div style="margin-top: 30px;">
-            <AutoCameraView/>
+          <div style="margin-top: 30px">
+            <AutoCameraView ref="myComent" />
           </div>
         </div>
       </el-aside>
@@ -34,9 +34,11 @@
           "
         >
           <el-card class="box-card" style="height: 75%">
-            <!-- <div v-for="(item,i) in OutputContent" class="text item"> -->
-            <!-- {{item }} -->
-            <!-- </div> -->
+            <h2>欢迎使用慧眼识物</h2>
+            <div v-for="item in OutputContent" :key="item.classId" class="text item">
+              <h4>{{ item.classId }} : {{ item.lastTrackedTime }} {{ item.des }}</h4>
+              <!-- {{ item }} -->
+            </div>
           </el-card>
 
           <el-popover placement="top-start" title="模式选择" width="200" trigger="hover">
@@ -51,9 +53,9 @@
         </div>
       </el-aside>
     </el-container>
-<!--    <AudioView/>-->
-<!--    <OldAudioView/>-->
-    <Record/>
+    <!--    <AudioView/>-->
+    <!--    <OldAudioView/>-->
+    <Record />
   </div>
 </template>
 
@@ -62,27 +64,31 @@ import AutoCameraView from "../components/AutoCameraView";
 import AudioView from "../components/AudioView";
 import Record from "../components/Record";
 import OldAudioView from "../components/OldAudioView";
+import Global from "../utils/Global";
 export default {
   name: "HomePage",
   components: { OldAudioView, AutoCameraView, AudioView, Record },
   data() {
     return {
       SearchInput: "",
-      OutputContent: [],
+      OutputContent: Global.OutputContent,
       DetectMode: false,
     };
   },
   methods: {
     search() {
+      Global.OutputContent = [];
       AutoCameraView.requestSearch(this.SearchInput);
+      this.OutputContent = Global.OutputContent;
     },
     resetSearch() {
       AutoCameraView.resetSearch();
-    }
+      Global.OutputContent = [];
+      this.OutputContent = [];
+    },
   },
   mounted() {
     console.log("In mounted");
-    this.OutputContent.push("欢迎使用慧眼识物");
   },
 };
 </script>
