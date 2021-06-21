@@ -27,7 +27,7 @@ export let TrackingObject = typedef({
   state: int32,               //type is EnumTrackState (0 | 1 | 2 | 3)
   hider: unknown              //type is TrackingObject, but typing it causes reference error. Only nonnull when state == EnumTrackState.HIDE
 })
-export let trackingObjects = []
+export let trackingObjects = [];
 export let screenWidth = 1, screenHeight = 1;
 let boxW = function(box) {
   return box.x2 - box.x1;

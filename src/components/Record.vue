@@ -19,6 +19,8 @@
 import Record from "../utils/Record";
 import axios from "axios";
 import { HZRecorder } from "./HZRecorder.js";
+import AutoCameraView from './AutoCameraView'
+import { requestSearch } from './AutoCameraView'
 
 function send() {
   alert(1);
@@ -143,6 +145,7 @@ export default {
             this.msg = res.data.result;
             console.log(res);
             console.log(this.msg);
+            AutoCameraView.requestSearch(this.msg);
           });
         })
         .catch((e) => {
