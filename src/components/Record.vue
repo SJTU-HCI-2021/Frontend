@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import Record from "../utils/Record";
+// import Record from "../utils/Record";
 import axios from "axios";
 import { HZRecorder } from "./HZRecorder.js";
 import AutoCameraView from "./AutoCameraView";
@@ -31,8 +31,8 @@ export default {
     return {
       isFinished: false,
       audio: "",
-      recorder: new Record(),
-      // recorder: "",
+      // recorder: new Record(),
+      recorder: "",
       msg: "",
     };
   },
@@ -57,6 +57,7 @@ export default {
     },
 
     startRecord: function () {
+      this.recorder.clear();
       console.log("start to record now.");
       let self = this;
       self.isFinished = false;
@@ -83,6 +84,7 @@ export default {
           console.log("stop record failed.");
         },
       });
+      // self.recorder.clear();
       // this.recorder.stop();
       //this.axios.post('')
     },

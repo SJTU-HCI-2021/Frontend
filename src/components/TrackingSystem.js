@@ -115,6 +115,7 @@ export default class TrackingSystem {
             let cy = boxCy(box);
             let missing = true;
             for (const eachObj of trackingObjects) {
+                console.log(eachObj.classId + "vs" + classId + "result: " + (eachObj.classId === classId));
                 if (eachObj.classId !== classId || eachObj.state === EnumTrackState.NORMAL) // same classID & avoid redefinition
                     continue;
                 let eachBox = eachObj.box;

@@ -144,6 +144,12 @@ function HZRecorder(stream, config) {
         audio.src = window.URL.createObjectURL(this.getBlob());
     }
 
+    //清理缓存的录音数据
+    this.clear = function() {
+        audioData.buffer = [];
+        audioData.size = 0;
+    };
+
     //上传
     this.upload = function() {
         return this.getBlob()

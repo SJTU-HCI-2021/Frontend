@@ -35,7 +35,7 @@
         >
           <el-card class="box-card" style="height: 75%">
             <h2>欢迎使用慧眼识物</h2>
-            <div v-for="item in OutputContent" :key="item.classId" class="text item">
+            <div v-for="item in OutputContent" :key="item.box" class="text item">
               <h4>{{ item.classId }} : {{ item.lastTrackedTime }} {{ item.des }}</h4>
               <!-- {{ item }} -->
             </div>
