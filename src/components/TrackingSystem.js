@@ -31,26 +31,16 @@ export let TrackingObject = typedef({
 export let trackingObjects = [];
 export let screenWidth = 1,
     screenHeight = 1;
-let boxW = function(box) {
-    return box.x2 - box.x1;
-}
-let boxH = function(box) {
-    return box.y2 - box.y1;
-}
-let boxCx = function(box) {
-    return (box.x1 + box.x2) / 2;
-}
-let boxCy = function(box) {
-    return (box.y1 + box.y2) / 2;
-}
 let looksLikeSameBox = function(box1, box2, errorRate) {
-        let w1 = boxW(box1);
-        let h1 = boxH(box1);
-        let intersectionW = Math.max(0, Math.min(box1.x2, box2.x2) - Math.max(box1.x1, box2.x1));
-        let intersectionH = Math.max(0, Math.min(box1.y2, box2.y2) - Math.max(box1.y1, box2.y1));
-        return (Math.abs(w1 - intersectionW) < w1 * errorRate && Math.abs(h1 - intersectionH) < h1 * errorRate)
-    }
-    // called by this.Idle() - judge a missing object why disappeared (removed from screen / hide by other object)
+    let right1 = box1.x1 + box1.x2;
+    let bottom1 = box1.y1 + box1.y2;
+    let right2 = box2.x1 + box2.x2;
+    let bottom2 = box2.y1 + box2.y2;
+    let intersectionW = Math.max(0, Math.min(right1, right2) - Math.max(box1.x1, box2.x1));
+    let intersectionH = Math.max(0, Math.min(bottom1, bottom2) - Math.max(box1.y1, box2.y1));
+    return (Math.abs(box1.x2 - intersectionW) < box1.x2 * errorRate && Math.abs(box1.y2 - intersectionH) < box1.y2 * errorRate)
+}
+// called by this.Idle() - judge a missing object why disappeared (removed from screen / hide by other object)
 let judgeDisappearReason = function(obj) {
         let hider = findHider(obj);
         if (hider) {
@@ -85,8 +75,8 @@ let findHider = function(obj) {
         if (eachObj.state === EnumTrackState.NORMAL && looksLikeSameBox(box, eachBox, errorRate)) {
             return eachObj;
         }
-        return undefined;
     }
+    return undefined;
 }
 export default class TrackingSystem {
     StartAddTrackData() {
@@ -111,8 +101,8 @@ export default class TrackingSystem {
             box.y1 = y1;
             box.x2 = x2;
             box.y2 = y2;
-            let cx = boxCx(box);
-            let cy = boxCy(box);
+            let cx = box.x1 + box.x2/2;
+            let cy = box.x1 + box.x2/2;
             let missing = true;
             for (const eachObj of trackingObjects) {
                 console.log(eachObj.classId + "vs" + classId + "result: " + (eachObj.classId === classId));
@@ -125,7 +115,7 @@ export default class TrackingSystem {
                     eachObj.state = EnumTrackState.NORMAL;
                     eachObj.des = "物体正常显示";
                     eachObj.lastTrackedTime = new Date().getTime();
-                    console.log("AddTrackData: " + classId + " is moved from " + boxCy(eachBox) + ", " + boxCx(eachBox) + " to " + cx + ", " + cy);
+                    console.log("AddTrackData: " + classId + " is moved from " + (eachBox.x1 + eachBox.x2/2) + ", " + (eachBox.y1 + eachBox.y2/2) + " to " + cx + ", " + cy);
                     missing = false;
                     break;
                 }
