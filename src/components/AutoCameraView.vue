@@ -36,11 +36,9 @@ export default {
   },
   requestSearch(description) {
     if (canvas === undefined) return;
-    let classId = 1 + Global.labels.findIndex((label) => description.indexOf(label) >= 0);
-    if (classId === undefined) return;
     instance.requestedSearch = true;
-    console.log("taken " + description + " as " + classId);
-    let objects = trackingSystem.FindObject(classId);
+    console.log("taken " + description);
+    let objects = trackingSystem.FindObject(description);
     let ctx = canvas.getContext("2d");
     ctx.drawImage(videoStaticImg, 0, 0, videoStaticImg.width, videoStaticImg.height);
     ctx.strokeStyle = "red";
@@ -52,10 +50,10 @@ export default {
       let box = object.box;
       console.log("drawing(uv): ", box.x1, box.y1, box.x2, box.y2);
       ctx.strokeRect(
-        videoStaticImg.width * box.x1,
-        videoStaticImg.height * box.y1,
-        videoStaticImg.width * (box.x2 - box.x1),
-        videoStaticImg.height * (box.y2 - box.y1)
+        box.x1,
+        box.y1,
+        box.x2,
+        box.y2
       );
     }
   },
@@ -118,7 +116,7 @@ export default {
       let data2 = {"image":url,
         "top_num": 10
       }
-      this.$http.post("/api", data).then((res) => {
+      // this.$http.post("/api", data).then((res) => {
         // let o = res.data[0].output;
         // console.log(o);
         // trackingSystem.StartAddTrackData();
@@ -137,10 +135,27 @@ export default {
         // }
         // trackingSystem.EndAddTrackData();
         // console.log("first picture analyzed");
-      });
+      // });
       axios.post('https://aip.baidubce.com/rpc/2.0/ai_custom/v1/detection/test_detection_hci?access_token=24.39d0adf98dfb199de17c0c2e5ecb3578.2592000.1626856168.282335-24411081', data2).then((res) => {
         let o = res.data;
-        console.log(o);
+        //console.log(o);
+        //console.log(o.results)
+        trackingSystem.StartAddTrackData();
+        for (const result of o.results) {
+          let score = result.score;
+          let classId = result.name
+          let box = result.location;
+          //console.log("classId: " + classId + " score: " + score + " box: " + box.left + ", " + box.top + ", " + box.width + ", " + box.height)
+          trackingSystem.AddTrackData(
+            score,
+            classId,
+            box.left,
+            box.top,
+            box.width,
+            box.height
+          );
+        }
+        trackingSystem.EndAddTrackData();
       });
 
     },

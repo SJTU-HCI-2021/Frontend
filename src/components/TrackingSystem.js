@@ -8,7 +8,6 @@ import {
   string,
   unknown,
 } from 'rainforest-js'
-import Global from '../utils/Global'
 export const Box = typedef({
   x1 : float64,
   y1 : float64,
@@ -22,7 +21,7 @@ export const EnumTrackState = ({
   OUT_OFF_SCREEN: 3           //object seems removed from the screen
 })
 export let TrackingObject = typedef({
-  classId: int32,             //classId is defined by the Backend for each object, like 32:dog.
+  classId: string,             //classId is defined by the Backend for each object.
   box: Box,                   //position of this object
   lastTrackedTime: float64,   //last time this object tracked
   state: int32,               //type is EnumTrackState (0 | 1 | 2 | 3)
@@ -127,19 +126,20 @@ export default class TrackingSystem {
         obj.state = EnumTrackState.NORMAL;
         obj.lastTrackedTime = new Date().getTime();
         obj.hider = undefined;
-        console.log("accepted: " + Global.labels[classId - 1] + " at pos " + cx + ", " + cy);
+        console.log("accepted: " + classId + " at pos " + cx + ", " + cy);
         trackingObjects.push(obj);
       }
     } else {
-      console.log("refused low reliability: " + reliability + " of: " + Global.labels[classId - 1]);
+      console.log("refused low reliability: " + reliability + " of: " + classId);
     }
   }
-  FindObject(classId) {
+  FindObject(description) {
     let candidates_normal = [];
     let candidates_missing = [];
     for (const eachObj of trackingObjects) {
-      console.log("FindObject: compare " + classId + " vs " + eachObj.classId);
-      if (eachObj.classId === classId) {
+      let indexOf = description.indexOf(eachObj.classId);
+      console.log("FindObject: compare " + description + " vs " + eachObj.classId + " indexOf: " + indexOf);
+      if (indexOf >= 0) {
         switch(eachObj.state) {
           case EnumTrackState.NORMAL:
             candidates_normal.push(eachObj);
