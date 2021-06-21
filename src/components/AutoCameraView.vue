@@ -27,8 +27,11 @@ export let trackingSystem = new TrackingSystem();
 export let canvas, videoStaticImg;
 export let instance;
 export default {
-  data: {
-    search_result: "",
+  data() {
+    return {
+      search_result: [],
+      requestedSearch: false,
+    };
   },
   requestSearch(description) {
     if (canvas === undefined) return;
@@ -43,7 +46,7 @@ export default {
     ctx.lineWidth = 3;
     // if(objects.length == 0{})
     for (const object of objects) {
-      search_result.push(object.state);
+      instance.search_result.push(object.state);
       console.log("state " + object.state);
       let box = object.box;
       console.log("drawing(uv): ", box.x1, box.y1, box.x2, box.y2);
@@ -57,11 +60,6 @@ export default {
   },
   cancelSearch() {
     instance.requestedSearch = false;
-  },
-  data() {
-    return {
-      requestedSearch: false,
-    };
   },
   mounted() {
     instance = this;
