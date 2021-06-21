@@ -53,8 +53,8 @@ export default {
       ctx.strokeRect(
         videoStaticImg.width * box.x1,
         videoStaticImg.height * box.y1,
-        videoStaticImg.width * box.x2,
-        videoStaticImg.height * box.y2
+        videoStaticImg.width * (box.x2 - box.x1),
+        videoStaticImg.height * (box.y2 - box.y1)
       );
     }
   },
