@@ -23,7 +23,9 @@
           "
         >
           <a-row>
-            <a-col :span="4" align="start">欢迎来到慧眼识物</a-col>
+            <a-col :span="4" align="start" style="font-size: 24px; font-weight: 800">
+              慧眼识物</a-col
+            >
             <a-col :span="2" align="start"></a-col>
             <a-col
               :span="12"
@@ -37,42 +39,12 @@
               "
             >
               <div style="display: flex">
-                <i
-                  aria-label="icon: search"
-                  class="anticon anticon-search"
-                  style="
-                    display: inline-block;
-                    color: inherit;
-                    font-style: normal;
-                    <!-- line-height: 0; -->
-                    text-align: center;
-                    text-transform: none;
-                    <!-- vertical-align: -0.125em; -->
-                    text-rendering: optimizeLegibility;
-                    -webkit-font-smoothing: antialiased;
-                  "
-                  ><svg
-                    viewBox="64 64 896 896"
-                    data-icon="search"
-                    width="1em"
-                    height="1em"
-                    fill="currentColor"
-                    aria-hidden="true"
-                    focusable="false"
-                    class=""
-                  >
-                    <path
-                      d="M909.6 854.5L649.9 594.8C690.2 542.7 712 479 712 412c0-80.2-31.3-155.4-87.9-212.1-56.6-56.7-132-87.9-212.1-87.9s-155.5 31.3-212.1 87.9C143.2 256.5 112 331.8 112 412c0 80.1 31.3 155.5 87.9 212.1C256.5 680.8 331.8 712 412 712c67 0 130.6-21.8 182.7-62l259.7 259.6a8.2 8.2 0 0 0 11.6 0l43.6-43.5a8.2 8.2 0 0 0 0-11.6zM570.4 570.4C528 612.7 471.8 636 412 636s-116-23.3-158.4-65.6C211.3 528 188 471.8 188 412s23.3-116.1 65.6-158.4C296 211.3 352.2 188 412 188s116.1 23.2 158.4 65.6S636 352.2 636 412s-23.3 116.1-65.6 158.4z"
-                    ></path></svg
-                ></i>
                 <a-input
                   placeholder="请输入内容"
                   v-model="SearchInput"
                   class="input-with-select"
                   style="border: none; display: inline-block; margin: -8px 20px"
                 >
-                  <!-- <el-button slot="append" icon="el-icon-search"  /> -->
-                  <!-- <el-button slot="append" icon="el-icon-delete" @click="resetSearch" /> -->
                 </a-input>
                 <a-button
                   shape="circle"
@@ -97,69 +69,72 @@
           </a-row>
         </div>
       </a-layout-header>
-      <a-layout-content>
-        <el-container>
-          <!-- <el-header>欢迎来到慧眼识物</el-header> -->
-          <el-aside style="width: 40%; margin-left: 30px">
-            <div class="LeftPart" style="margin-top: 0; width: 100%">
-              <div style="margin-top: 10px"></div>
-              <div style="margin-top: 30px">
-                <AutoCameraView ref="myComent" />
-              </div>
-            </div>
-          </el-aside>
+      <a-layout-content class="space-align-container">
+        <div class="LeftPart" style="margin-top: 30px">
+          <AutoCameraView />
+        </div>
+        <Record />
 
-          <el-aside style="width: 50%">
-            <div
-              class="RightPart"
-              style="
-                float: left;
-                margin-left: 15px;
-                width: 80%;
-                height: 100%;
-                margin-top: 30px;
-              "
-            >
-              <el-card class="box-card" style="height: 75%">
-                <h2>欢迎使用慧眼识物</h2>
-                <div v-for="item in OutputContent" :key="item.box" class="text item">
-                  <h4>{{ item.classId }} : {{ item.lastTrackedTime }} {{ item.des }}</h4>
-                  <!-- {{ item }} -->
-                </div>
-              </el-card>
-
-              <el-popover
-                placement="top-start"
-                title="模式选择"
-                width="200"
-                trigger="hover"
-              >
-                <el-switch
-                  v-model="DetectMode"
-                  active-text="实时检测"
-                  inactive-text="长按输入"
-                >
-                </el-switch>
-                <el-button slot="reference">模式切换</el-button>
-              </el-popover>
-            </div>
-          </el-aside>
-        </el-container>
-        <el-container>
-          <Record />
-        </el-container>
+        <div
+          class="RightPart"
+          style="
+            float: left;
+            margin-left: 15px;
+            width: 100%;
+            margin-top: 30px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+          "
+        >
+          <a-card
+            :loading="loading"
+            title="识别结果"
+            style="text-align: left"
+            headStyle="fontWeight:800; fontSize:26px;"
+          >
+            <a-table :columns="columns" :data-source="OutputContent">
+              <!-- <a slot="name" slot-scope="text">{{ text }}</a> -->
+              <!-- <span slot="customTitle"><a-icon type="smile-o" /> 识别物体</span> -->
+            </a-table>
+          </a-card>
+        </div>
       </a-layout-content>
-      <a-layout-footer>Footer</a-layout-footer>
+      <a-layout-footer
+        style="
+          margin-top: 500px;
+          background: #fff;
+          box-shadow: 0 2px 8px #f0f1f2;
+          position: relative;
+          z-index: 10;
+          max-width: 100%;
+          background-color: #001529;
+          color: white;
+          font-size: 20px;
+          font-weight: 800;
+        "
+        >慧眼识物</a-layout-footer
+      >
     </a-layout>
   </div>
-
-  <!--    <AudioView/>-->
-  <!--    <OldAudioView/>-->
-
-  <!-- </div> -->
 </template>
 
 <script>
+const columns = [
+  {
+    title: "识别物体名称",
+    dataIndex: "classId",
+    key: "classId",
+  },
+  {
+    title: "上次追中成功时间",
+    dataIndex: "lastTrackedTime",
+    key: "lastTrackedTime",
+  },
+  {
+    title: "结果",
+    dataIndex: "des",
+    key: "des",
+  },
+];
 import AutoCameraView from "../components/AutoCameraView";
 import AudioView from "../components/AudioView";
 import Record from "../components/Record";
@@ -173,6 +148,7 @@ export default {
       SearchInput: "",
       OutputContent: Global.OutputContent,
       DetectMode: false,
+      columns,
     };
   },
   methods: {
@@ -192,5 +168,29 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.space-align-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  margin-left: 600px;
+  margin-right: 600px;
+  margin-bottom: 300px;
+  /* background-color: white; */
+}
+.space-align-block {
+  margin: 8px 4px;
+  border: 1px solid #40a9ff;
+  padding: 4px;
+  flex: none;
+}
+.space-align-block .mock-block {
+  display: inline-block;
+  padding: 32px 8px 16px;
+  background: rgba(150, 150, 150, 0.2);
+}
+</style>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

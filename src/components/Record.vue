@@ -1,17 +1,33 @@
 <template>
-  <div class="record">
-    <h1>Click following button to record voice:</h1>
-    <input @click="startRecord" type="button" value="录音" />
-    <input @click="stopRecord" type="button" value="停止" />
-    <input @click="play" type="button" value="播放" />
-    <div class="record-play" v-show="isFinished">
-      <h2>Current voice player is:</h2>
-      <audio controls autoplay></audio>
-    </div>
-    <div class="display-audio" v-show="isFinished">
-      <h2>识别结果:</h2>
-      <h3>{{ this.msg }}</h3>
-    </div>
+  <div
+    style="
+      float: left;
+      margin-left: 15px;
+      width: 100%;
+      margin-top: 30px;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      height: 350px;
+    "
+  >
+    <a-card
+      :loading="loading"
+      title="语音输入结果"
+      headStyle="fontWeight:800; fontSize:26px;text-align:left"
+      style="height: 350px"
+    >
+      <div style="text-align: center">
+        <audio controls autoplay></audio>
+        <h3>按住以下按钮开始录制</h3>
+        <a-button shape="circle" @click="startRecord" icon="play-circle" value="录音" />
+        <a-button shape="circle" @click="stopRecord" icon="pause" value="停止" />
+        <a-button shape="circle" @click="play" icon="caret-right" value="播放" />
+      </div>
+
+      <div class="display-audio" style="margin-top: 10px; padding-bottom: 30px">
+        <h2>识别结果:</h2>
+        <h2>{{ msg }}</h2>
+      </div>
+    </a-card>
   </div>
 </template>
 
@@ -34,6 +50,7 @@ export default {
       // recorder: new Record(),
       recorder: "",
       msg: "",
+      columns,
     };
   },
   mounted() {
@@ -110,7 +127,7 @@ export default {
       });
     },
 
-    play() {
+    play: function () {
       console.log("play record now.");
       let self = this;
       self.isFinished = true;
@@ -144,7 +161,9 @@ export default {
           };
           this.$http.post("/audio", posdata).then((res) => {
             this.msg = res.data.result[0];
+            console.log(res);
             AutoCameraView.requestSearch(this.msg);
+            this.$forceUpdate();
           });
         })
         .catch((e) => {
