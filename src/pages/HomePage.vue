@@ -49,6 +49,7 @@
                     v-model="SearchInput"
                     class="input-with-select"
                     style="border: none; display: inline-block; margin: -8px 20px"
+                    @keydown="resetSearch"
                     @keyup.enter.native="search"
                   />
                 </a-popover>
