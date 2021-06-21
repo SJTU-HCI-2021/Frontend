@@ -16,15 +16,54 @@
       style="height: 350px"
     >
       <div style="text-align: center">
-        <audio controls autoplay></audio>
-        <h3>按住以下按钮开始录制</h3>
-        <a-button shape="circle" @click="startRecord" icon="play-circle" value="录音" />
-        <a-button shape="circle" @click="stopRecord" icon="pause" value="停止" />
-        <a-button shape="circle" @click="play" icon="caret-right" value="播放" />
+        <div>
+          <a-popover title="语音播放器" placement="top">
+            <template slot="content">
+              <p style="width: 300px">
+                语音输入后的音频被保存后将会在这里提供回放，用户可以在这里重新检查自己的语音输入。
+              </p>
+            </template>
+            <audio controls autoplay></audio>
+          </a-popover>
+        </div>
+        <div>
+          <a-popover title="开始录制按钮" placement="top">
+            <template slot="content">
+              <p style="width: 300px">
+                点击此按钮开始录制语音输入，点击此按钮的同时语音播放器中的录音将会被重置，请注意这一点。
+              </p>
+            </template>
+            <a-button
+              shape="circle"
+              @click="startRecord"
+              icon="play-circle"
+              value="录音"
+            />
+          </a-popover>
+          <a-popover title="结束录制按钮" placement="top">
+            <template slot="content">
+              <p style="width: 300px">点击此按钮终止语音输入。</p>
+            </template>
+            <a-button shape="circle" @click="stopRecord" icon="pause" value="停止" />
+          </a-popover>
+          <a-popover title="获取结果按钮" placement="top">
+            <template slot="content">
+              <p style="width: 300px">
+                点击此按钮后将会自动播放播放器中的录音内容，同时会将音频上传至服务器获取语音识别结果，并且对结果进行物体追踪识别。
+              </p>
+            </template>
+            <a-button shape="circle" @click="play" icon="caret-right" value="播放" />
+          </a-popover>
+        </div>
       </div>
 
       <div class="display-audio" style="margin-top: 10px; padding-bottom: 30px">
-        <h2>识别结果:</h2>
+        <a-popover title="语音输入结果" placement="top">
+          <template slot="content">
+            <p style="width: 300px">显示语音输入后识别的文字结果。</p>
+          </template>
+          <h2 style="font-weight: 800">识别结果:</h2>
+        </a-popover>
         <h2>{{ msg }}</h2>
       </div>
     </a-card>

@@ -1,15 +1,25 @@
 <template>
   <!--Display video or picture-->
   <div>
-    <video
-      v-show="!requestedSearch"
-      id="myvideo"
-      crossOrigin="Anonymous"
-      ref="video"
-      width="100%"
-      height="100%"
-      autoplay
-    />
+    <a-popover title="实时监测画面" placement="left">
+      <template slot="content">
+        <p style="width: 300px">
+          摄像设备事实拍摄范围内的话面，程序将会基于该画面进行物体识别，请尽量不要移动摄像机使得程序能够正确运行。
+        </p>
+        <p style="width: 300px">
+          红色框圈起来的内容是检测出的物体的结果，而物体是否被遮挡，是否被移除屏幕等结果可以再页面下方的“识别结果”一栏中查看。
+        </p>
+      </template>
+      <video
+        v-show="!requestedSearch"
+        id="myvideo"
+        crossOrigin="Anonymous"
+        ref="video"
+        width="100%"
+        height="100%"
+        autoplay
+      />
+    </a-popover>
     <canvas
       v-show="requestedSearch"
       ref="canvas2"
@@ -33,6 +43,7 @@ export default {
     return {
       search_result: [],
       requestedSearch: false,
+      buttonWidth: 40,
     };
   },
   requestSearch(description) {

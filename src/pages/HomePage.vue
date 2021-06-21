@@ -27,6 +27,7 @@
               慧眼识物</a-col
             >
             <a-col :span="2" align="start"></a-col>
+
             <a-col
               :span="12"
               style="
@@ -39,30 +40,49 @@
               "
             >
               <div style="display: flex">
-                <a-input
-                  placeholder="请输入内容"
-                  v-model="SearchInput"
-                  class="input-with-select"
-                  style="border: none; display: inline-block; margin: -8px 20px"
-                >
-                </a-input>
-                <a-button
-                  shape="circle"
-                  icon="search"
-                  @click="search"
-                  style="margin: -8px 10px"
-                />
-                <a-button
-                  shape="circle"
-                  icon="delete"
-                  @click="resetSearch"
-                  style="margin: -8px 0px"
-                />
-                <a-button
+                <a-popover title="物体识别搜索框" placement="topLeft">
+                  <template slot="content">
+                    <p style="width: 300px">请输入要搜索的物体名称。</p>
+                  </template>
+                  <a-input
+                    placeholder="请输入内容"
+                    v-model="SearchInput"
+                    class="input-with-select"
+                    style="border: none; display: inline-block; margin: -8px 20px"
+                  >
+                  </a-input>
+                </a-popover>
+                <a-popover title="搜索键">
+                  <template slot="content">
+                    <p style="width: 300px">
+                      点击该按钮识别搜索框中的物体，请确保该物体已出现在摄像机的拍摄范围内。
+                    </p>
+                  </template>
+                  <a-button
+                    shape="circle"
+                    icon="search"
+                    @click="search"
+                    style="margin: -8px 10px"
+                  />
+                </a-popover>
+                <a-popover title="搜索重置键">
+                  <template slot="content">
+                    <p style="width: 300px">
+                      重置搜索框中的输入内容与目前已有的搜索结果。
+                    </p>
+                  </template>
+                  <a-button
+                    shape="circle"
+                    icon="delete"
+                    @click="resetSearch"
+                    style="margin: -8px 0px"
+                  />
+                </a-popover>
+                <!-- <a-button
                   shape="circle"
                   icon="setting"
                   style="margin: -8px 10px"
-                ></a-button>
+                ></a-button> -->
               </div>
             </a-col>
             <a-col :span="4"></a-col>
