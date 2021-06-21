@@ -74,7 +74,7 @@ let findHider = function(obj) {
   for (const eachObj of trackingObjects) {
     let eachBox = eachObj.box;
     let errorRate = 0.2; //TODO: need find adjust rate
-    if(looksLikeSameBox(box, eachBox, errorRate)) {
+    if(eachObj.state === EnumTrackState.NORMAL && looksLikeSameBox(box, eachBox, errorRate)) {
       return eachObj;
     }
   }
