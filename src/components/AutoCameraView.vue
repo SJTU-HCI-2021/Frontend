@@ -64,7 +64,7 @@ export default {
 
   created: function () {
     //这里是定时器
-    setInterval(this.timer, 1000 * 15);
+    setInterval(this.timer, 1000 * 5);
   },
 
   methods: {
@@ -108,26 +108,6 @@ export default {
       let data = { recognize_img: url };
       data = JSON.stringify(data);
       let data2 = { image: url, top_num: 10 };
-      // this.$http.post("/api", data).then((res) => {
-      // let o = res.data[0].output;
-      // console.log(o);
-      // trackingSystem.StartAddTrackData();
-      // for (let i = 0; i < o.detection_boxes.length; i++) {
-      //   let reliability = o.detection_scores[i];
-      //   let classId = o.detection_classes[i];
-      //   let box = o.detection_boxes[i];
-      //   trackingSystem.AddTrackData(
-      //     reliability,
-      //     classId,
-      //     box[0],
-      //     box[1],
-      //     box[2],
-      //     box[3]
-      //   );
-      // }
-      // trackingSystem.EndAddTrackData();
-      // console.log("first picture analyzed");
-      // });
       axios
         .post(
           "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/detection/test_detection_hci?access_token=24.39d0adf98dfb199de17c0c2e5ecb3578.2592000.1626856168.282335-24411081",
