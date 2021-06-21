@@ -58,7 +58,7 @@ export default {
       );
     }
   },
-  cancelSearch() {
+  resetSearch() {
     instance.requestedSearch = false;
   },
   mounted() {

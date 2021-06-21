@@ -10,9 +10,9 @@
               class="input-with-select"
             >
               <el-button slot="append" icon="el-icon-search" @click="search"/>
+              <el-button slot="append" icon="el-icon-delete" @click="resetSearch"/>
             </el-input>
           </div>
-
           <div style="margin-top: 30px;">
             <AutoCameraView/>
           </div>
@@ -75,6 +75,9 @@ export default {
   methods: {
     search() {
       AutoCameraView.requestSearch(this.SearchInput);
+    },
+    resetSearch() {
+      AutoCameraView.resetSearch();
     }
   },
   mounted() {
