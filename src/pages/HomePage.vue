@@ -145,7 +145,7 @@ const columns = [
     key: "classId",
   },
   {
-    title: "上次追中成功时间",
+    title: "上次追踪成功时间",
     dataIndex: "lastTrackedTime",
     key: "lastTrackedTime",
   },
