@@ -105,7 +105,7 @@ export default class TrackingSystem {
         }
     }
     AddTrackData(reliability, classId, x1, y1, x2, y2) {
-        if (reliability > 0.3) {
+        if (reliability > 0.6) {
             let box = typeinit(Box);
             box.x1 = x1;
             box.y1 = y1;
