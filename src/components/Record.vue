@@ -80,6 +80,7 @@ function send() {
   alert(1);
 }
 
+const audio_fail_key = "audio_fail_key";
 export default {
   name: "Record",
   data() {
@@ -96,6 +97,15 @@ export default {
     this.initAudio();
   },
   methods: {
+    openAudioFailNotification() {
+      this.$notification["error"]({
+        audio_fail_key,
+        message: "语音识别失败",
+        description:
+          "程序没有成功识别到语音输入，请确保在安静环境下进行语音输入。请确保语音时常不要过短且输入内容合法。",
+        duration: 0,
+      });
+    },
     initAudio() {
       var _this = this;
       navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
@@ -201,6 +211,14 @@ export default {
           this.$http.post("/audio", posdata).then((res) => {
             this.msg = res.data.result[0];
             console.log(res);
+            if (
+              !res.data.result[0] ||
+              res.data.result[0] == undefined ||
+              res.data.result[0] == "" ||
+              res.data.result[0].length == 0
+            ) {
+              this.openAudioFailNotification();
+            }
             AutoCameraView.requestSearch(this.msg);
             this.$forceUpdate();
           });

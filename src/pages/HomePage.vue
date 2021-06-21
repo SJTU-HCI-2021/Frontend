@@ -160,6 +160,7 @@ import AudioView from "../components/AudioView";
 import Record from "../components/Record";
 import OldAudioView from "../components/OldAudioView";
 import Global from "../utils/Global";
+const key = "notification_key";
 export default {
   name: "HomePage",
   components: { OldAudioView, AutoCameraView, AudioView, Record },
@@ -169,13 +170,26 @@ export default {
       OutputContent: Global.OutputContent,
       DetectMode: false,
       columns,
+      search_fail: false,
     };
   },
   methods: {
+    openSearchFailNotification() {
+      this.$notification["error"]({
+        key,
+        message: "识别失败",
+        description:
+          "程序没有成功识别到物体，请确保搜索的物体确实在拍摄范围内且输入框的输入合法。请确保画面没有反光等干扰因素导致识别结果失败。",
+        duration: 0,
+      });
+    },
     search() {
       Global.OutputContent = [];
       AutoCameraView.requestSearch(this.SearchInput);
       this.OutputContent = Global.OutputContent;
+      if (this.OutputContent.length === 0) {
+        this.openSearchFailNotification();
+      }
     },
     resetSearch() {
       AutoCameraView.resetSearch();
