@@ -29,24 +29,14 @@ export let TrackingObject = typedef({
 })
 export let trackingObjects = [];
 export let screenWidth = 1, screenHeight = 1;
-let boxW = function(box) {
-  return box.x2 - box.x1;
-}
-let boxH = function(box) {
-  return box.y2 - box.y1;
-}
-let boxCx = function(box) {
-  return (box.x1 + box.x2)/2;
-}
-let boxCy = function(box) {
-  return (box.y1 + box.y2)/2;
-}
 let looksLikeSameBox = function(box1, box2, errorRate) {
-  let w1 = boxW(box1);
-  let h1 = boxH(box1);
-  let intersectionW = Math.max(0, Math.min(box1.x2, box2.x2) - Math.max(box1.x1, box2.x1));
-  let intersectionH = Math.max(0, Math.min(box1.y2, box2.y2) - Math.max(box1.y1, box2.y1));
-  return (Math.abs(w1 - intersectionW) < w1 * errorRate && Math.abs(h1 - intersectionH) < h1 * errorRate)
+  let right1 = box1.x1 + box1.x2;
+  let bottom1 = box1.y1 + box1.y2;
+  let right2 = box2.x1 + box2.x2;
+  let bottom2 = box2.y1 + box2.y2;
+  let intersectionW = Math.max(0, Math.min(right1, right2) - Math.max(box1.x1, box2.x1));
+  let intersectionH = Math.max(0, Math.min(bottom1, bottom2) - Math.max(box1.y1, box2.y1));
+  return (Math.abs(box1.x2 - intersectionW) < box1.x2 * errorRate && Math.abs(box1.y2 - intersectionH) < box1.y2 * errorRate)
 }
 // called by this.Idle() - judge a missing object why disappeared (removed from screen / hide by other object)
 let judgeDisappearReason = function(obj) {
@@ -102,8 +92,6 @@ export default class TrackingSystem {
       box.y1 = y1;
       box.x2 = x2;
       box.y2 = y2;
-      let cx = boxCx(box);
-      let cy = boxCy(box);
       let missing = true;
       for (const eachObj of trackingObjects) {
         if(eachObj.classId !== classId || eachObj.state === EnumTrackState.NORMAL) // same classID & avoid redefinition
@@ -114,7 +102,7 @@ export default class TrackingSystem {
           eachObj.box = box;
           eachObj.state = EnumTrackState.NORMAL;
           eachObj.lastTrackedTime = new Date().getTime();
-          console.log("AddTrackData: " + classId + " is moved from " + boxCy(eachBox) + ", " + boxCx(eachBox) + " to " + cx + ", " + cy);
+          console.log("AddTrackData: " + classId + " is moved from " + eachBox.x1 + ", " + eachBox.y1 + " to " + box.x1 + ", " + box.y1);
           missing = false;
           break;
         }
@@ -126,7 +114,7 @@ export default class TrackingSystem {
         obj.state = EnumTrackState.NORMAL;
         obj.lastTrackedTime = new Date().getTime();
         obj.hider = undefined;
-        console.log("accepted: " + classId + " at pos " + cx + ", " + cy);
+        console.log("accepted: " + classId + " at pos " + box.x1 + ", " + box.y1);
         trackingObjects.push(obj);
       }
     } else {
