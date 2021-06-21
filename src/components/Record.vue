@@ -20,7 +20,6 @@ import Record from "../utils/Record";
 import axios from "axios";
 import { HZRecorder } from "./HZRecorder.js";
 import AutoCameraView from './AutoCameraView'
-import { requestSearch } from './AutoCameraView'
 
 function send() {
   alert(1);
@@ -142,9 +141,7 @@ export default {
             speech: res,
           };
           this.$http.post("/audio", posdata).then((res) => {
-            this.msg = res.data.result;
-            console.log(res);
-            console.log(this.msg);
+            this.msg = res.data.result[0];
             AutoCameraView.requestSearch(this.msg);
           });
         })

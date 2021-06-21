@@ -9,7 +9,7 @@
               v-model="SearchInput"
               class="input-with-select"
             >
-              <el-button slot="append" icon="el-icon-search"></el-button>
+              <el-button slot="append" icon="el-icon-search" @click="search"/>
             </el-input>
           </div>
 
@@ -72,7 +72,11 @@ export default {
       DetectMode: false,
     };
   },
-  methods: {},
+  methods: {
+    search() {
+      AutoCameraView.requestSearch(this.SearchInput);
+    }
+  },
   mounted() {
     console.log("In mounted");
     this.OutputContent.push("欢迎使用慧眼识物");

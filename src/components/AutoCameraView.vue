@@ -18,32 +18,31 @@
 import TrackingSystem from './TrackingSystem'
 import Global from '../utils/Global'
 
-let trackingSystem = new TrackingSystem();
+export let trackingSystem = new TrackingSystem()
+export let canvas, videoStaticImg;
+export let instance;
 export default {
   requestSearch(description) {
-    console.log("testIndex:" + "人。".indexOf("人"))
-    let classId = 1 + Global.labels.findIndex(label => {
-      console.log("description \"" + description + "\" label: \"" + label + "\" r: " + description.indexOf(label)
-        + " description.indexOf(\"人\"): " + description.indexOf("人") + " label.indexOf(\"人\"): " + label.indexOf("人"));
-      return description.indexOf(label) >= 0
-    });
+    if(canvas === undefined)
+      return;
+    let classId = 1 + Global.labels.findIndex(label => description.indexOf(label) >= 0);
     if(classId === undefined)
       return;
-    this.requestedSearch = true;
+    instance.requestedSearch = true;
+    console.log("taken " + description + " as " + classId);
     let objects = trackingSystem.FindObject(classId);
-    let c = document.createElement("canvas");
-    let ctx2 = c.getContext('2d')
-    ctx2.clearRect(0, 0, 640, 480)
-    ctx2.strokeStyle = "red"
-    ctx2.lineWidth = 3;
+    let ctx = canvas.getContext('2d')
+    ctx.drawImage(videoStaticImg, 0, 0, videoStaticImg.width, videoStaticImg.height);
+    ctx.strokeStyle = "red"
+    ctx.lineWidth = 3;
     for (const object of objects) {
       let box = object.box;
-      console.log("drawing: ", box.x1, box.y1, box.x2, box.y2);
-      ctx2.strokeRect(box.x1, box.y1, box.x2, box.y2);
+      console.log("drawing(uv): ", box.x1, box.y1, box.x2, box.y2);
+      ctx.strokeRect(videoStaticImg.width*box.x1, videoStaticImg.height*box.y1, videoStaticImg.width*box.x2, videoStaticImg.height*box.y2);
     }
   },
   cancelSearch() {
-    this.requestedSearch = false;
+    instance.requestedSearch = false;
   },
   data() {
     return {
@@ -51,6 +50,7 @@ export default {
     };
   },
   mounted() {
+    instance = this;
     this.callCamera();
   },
   updated() {
@@ -63,7 +63,6 @@ export default {
   },
 
   methods: {
-
     callCamera() {
       // 调用摄像头
       // H5调用电脑摄像头API
@@ -89,17 +88,18 @@ export default {
     },
     // 拍照
     photograph() {
-      var c = document.createElement("canvas");
-      var ctx = c.getContext("2d");
-      var v = document.getElementById("myvideo");
-      var height = v.videoHeight;
-      var width = v.videoWidth;
-      c.height = height;
-      c.width = width;
-      ctx.drawImage(v, 0, 0, width, height);
-      var url = c.toDataURL("image/jpeg", 1);
+      canvas = document.getElementById("canvas2");
+      videoStaticImg = document.createElement("canvas");
+      let ctx = videoStaticImg.getContext("2d");
+      let video = document.getElementById("myvideo");
+      let width = video.videoWidth;
+      let height = video.videoHeight;
+      videoStaticImg.height = height;
+      videoStaticImg.width = width;
+      ctx.drawImage(video, 0, 0, width, height);
+      let url = videoStaticImg.toDataURL("image/jpeg", 1);
       url = url.slice(23);
-      var data = { recognize_img: url };
+      let data = { recognize_img: url };
       data = JSON.stringify(data);
 
       this.$http.post("/api", data).then((res) => {
@@ -113,6 +113,7 @@ export default {
           trackingSystem.AddTrackData(reliability, classId, box[0], box[1], box[2], box[3]);
         }
         trackingSystem.EndAddTrackData();
+        console.log("first picture analyzed")
       });
     },
   },
