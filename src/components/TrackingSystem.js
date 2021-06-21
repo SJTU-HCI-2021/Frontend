@@ -8,6 +8,7 @@ import {
   string,
   unknown,
 } from 'rainforest-js'
+import Global from '../utils/Global'
 export const Box = typedef({
   x1 : float64,
   y1 : float64,
@@ -126,11 +127,11 @@ export default class TrackingSystem {
         obj.state = EnumTrackState.NORMAL;
         obj.lastTrackedTime = new Date().getTime();
         obj.hider = undefined;
-        console.log("AddTrackData: " + classId + " is appeared at " + cx + ", " + cy);
+        console.log("accepted: " + Global.labels[classId] + " at pos " + cx + ", " + cy);
         trackingObjects.push(obj);
       }
     } else {
-      console.log("refused low reliability data: " + reliability);
+      console.log("refused low reliability: " + reliability + " of: " + Global.labels[classId]);
     }
   }
   FindObject(classId) {
