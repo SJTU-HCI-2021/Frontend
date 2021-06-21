@@ -19,7 +19,7 @@
 import Record from "../utils/Record";
 import axios from "axios";
 import { HZRecorder } from "./HZRecorder.js";
-import AutoCameraView from './AutoCameraView'
+import AutoCameraView from "./AutoCameraView";
 
 function send() {
   alert(1);

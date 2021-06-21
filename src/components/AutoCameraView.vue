@@ -10,35 +10,49 @@
       height="100%"
       autoplay
     />
-    <canvas v-show="requestedSearch" ref="canvas2" id="canvas2" width="640" height="480"/>
+    <canvas
+      v-show="requestedSearch"
+      ref="canvas2"
+      id="canvas2"
+      width="640"
+      height="480"
+    />
   </div>
 </template>
 <script>
+import TrackingSystem from "./TrackingSystem";
+import Global from "../utils/Global";
 
-import TrackingSystem from './TrackingSystem'
-import Global from '../utils/Global'
-
-export let trackingSystem = new TrackingSystem()
+export let trackingSystem = new TrackingSystem();
 export let canvas, videoStaticImg;
 export let instance;
 export default {
+  data: {
+    search_result: "",
+  },
   requestSearch(description) {
-    if(canvas === undefined)
-      return;
-    let classId = 1 + Global.labels.findIndex(label => description.indexOf(label) >= 0);
-    if(classId === undefined)
-      return;
+    if (canvas === undefined) return;
+    let classId = 1 + Global.labels.findIndex((label) => description.indexOf(label) >= 0);
+    if (classId === undefined) return;
     instance.requestedSearch = true;
     console.log("taken " + description + " as " + classId);
     let objects = trackingSystem.FindObject(classId);
-    let ctx = canvas.getContext('2d')
+    let ctx = canvas.getContext("2d");
     ctx.drawImage(videoStaticImg, 0, 0, videoStaticImg.width, videoStaticImg.height);
-    ctx.strokeStyle = "red"
+    ctx.strokeStyle = "red";
     ctx.lineWidth = 3;
+    // if(objects.length == 0{})
     for (const object of objects) {
+      search_result.push(object.state);
+      console.log("state " + object.state);
       let box = object.box;
       console.log("drawing(uv): ", box.x1, box.y1, box.x2, box.y2);
-      ctx.strokeRect(videoStaticImg.width*box.x1, videoStaticImg.height*box.y1, videoStaticImg.width*box.x2, videoStaticImg.height*box.y2);
+      ctx.strokeRect(
+        videoStaticImg.width * box.x1,
+        videoStaticImg.height * box.y1,
+        videoStaticImg.width * box.x2,
+        videoStaticImg.height * box.y2
+      );
     }
   },
   cancelSearch() {
@@ -46,7 +60,7 @@ export default {
   },
   data() {
     return {
-      requestedSearch: false
+      requestedSearch: false,
     };
   },
   mounted() {
@@ -98,7 +112,8 @@ export default {
       videoStaticImg.width = width;
       ctx.drawImage(video, 0, 0, width, height);
       let url = videoStaticImg.toDataURL("image/jpeg", 1);
-      url = url.slice(23);
+      url = url.split("image/jpeg;base64,")[1];
+      // url = url.slice(23);
       let data = { recognize_img: url };
       data = JSON.stringify(data);
 
@@ -110,10 +125,17 @@ export default {
           let reliability = o.detection_scores[i];
           let classId = o.detection_classes[i];
           let box = o.detection_boxes[i];
-          trackingSystem.AddTrackData(reliability, classId, box[0], box[1], box[2], box[3]);
+          trackingSystem.AddTrackData(
+            reliability,
+            classId,
+            box[0],
+            box[1],
+            box[2],
+            box[3]
+          );
         }
         trackingSystem.EndAddTrackData();
-        console.log("first picture analyzed")
+        console.log("first picture analyzed");
       });
     },
   },
