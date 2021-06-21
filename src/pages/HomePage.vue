@@ -106,10 +106,9 @@
           "
         >
           <a-card
-            :loading="loading"
             title="识别结果"
             style="text-align: left"
-            headStyle="fontWeight:800; fontSize:26px;"
+            :headStyle="{'fontWeight': '800', 'fontSize': '26px'}"
           >
             <a-table :columns="columns" :data-source="OutputContent">
               <!-- <a slot="name" slot-scope="text">{{ text }}</a> -->

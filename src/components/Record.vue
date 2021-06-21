@@ -10,9 +10,8 @@
     "
   >
     <a-card
-      :loading="loading"
       title="语音输入结果"
-      headStyle="fontWeight:800; fontSize:26px;text-align:left"
+      :headStyle="{'fontWeight': '800', 'fontSize': '26px', 'text-align': 'left'}"
       style="height: 350px"
     >
       <div style="text-align: center">
@@ -90,7 +89,6 @@ export default {
       // recorder: new Record(),
       recorder: "",
       msg: "",
-      columns,
     };
   },
   mounted() {
