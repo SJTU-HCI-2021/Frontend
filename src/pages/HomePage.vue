@@ -49,8 +49,8 @@
                     v-model="SearchInput"
                     class="input-with-select"
                     style="border: none; display: inline-block; margin: -8px 20px"
-                  >
-                  </a-input>
+                    @keyup.enter.native="search"
+                  />
                 </a-popover>
                 <a-popover title="搜索键">
                   <template slot="content">
@@ -195,10 +195,7 @@ export default {
       Global.OutputContent = [];
       this.OutputContent = [];
     },
-  },
-  mounted() {
-    console.log("In mounted");
-  },
+  }
 };
 </script>
 
