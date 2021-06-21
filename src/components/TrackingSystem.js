@@ -127,17 +127,18 @@ export default class TrackingSystem {
         obj.state = EnumTrackState.NORMAL;
         obj.lastTrackedTime = new Date().getTime();
         obj.hider = undefined;
-        console.log("accepted: " + Global.labels[classId] + " at pos " + cx + ", " + cy);
+        console.log("accepted: " + Global.labels[classId - 1] + " at pos " + cx + ", " + cy);
         trackingObjects.push(obj);
       }
     } else {
-      console.log("refused low reliability: " + reliability + " of: " + Global.labels[classId]);
+      console.log("refused low reliability: " + reliability + " of: " + Global.labels[classId - 1]);
     }
   }
   FindObject(classId) {
     let candidates_normal = [];
     let candidates_missing = [];
     for (const eachObj of trackingObjects) {
+      console.log("FindObject: compare " + classId + " vs " + eachObj.classId);
       if (eachObj.classId === classId) {
         switch(eachObj.state) {
           case EnumTrackState.NORMAL:
