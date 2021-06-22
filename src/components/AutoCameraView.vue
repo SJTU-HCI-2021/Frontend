@@ -121,7 +121,7 @@ export default {
       let data2 = { image: url, top_num: 10 };
       axios
         .post(
-          "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/detection/test_detection_hci?access_token=24.39d0adf98dfb199de17c0c2e5ecb3578.2592000.1626856168.282335-24411081",
+          "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/detection/test_detection_hci?access_token=24.ed54de150042e7b3e4e4856c64983e81.2592000.1626921713.282335-24411081",
           data2
         )
         .then((res) => {
