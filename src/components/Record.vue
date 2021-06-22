@@ -84,11 +84,11 @@ export default {
   name: "Record",
   data() {
     return {
-      isFinished: false,
       audio: "",
       // recorder: new Record(),
       recorder: "",
       msg: "",
+      isRecording: false
     };
   },
   mounted() {
@@ -119,12 +119,18 @@ export default {
         }
       );
     },
-
+    recordButtonPress() {
+      if(!this.isRecording) {
+        this.startRecord();
+      } else {
+        this.stopRecord();
+      }
+    },
     startRecord: function () {
+      this.isRecording = true;
       this.recorder.clear();
       console.log("start to record now.");
       let self = this;
-      self.isFinished = false;
       self.recorder.start({
         success: (res) => {
           console.log("start record successfully.");
@@ -136,9 +142,9 @@ export default {
       // this.recorder.start();
     },
     stopRecord: function () {
+      this.isRecording = false;
       console.log("stop record now.");
       let self = this;
-      self.isFinished = false;
       self.recorder.stop({
         success: (res) => {
           //此处可以获取音频源文件(res)，用于上传等操作
@@ -178,7 +184,6 @@ export default {
     play: function () {
       console.log("play record now.");
       let self = this;
-      self.isFinished = true;
       self.audio = document.querySelector("audio");
       self.recorder.play(self.audio);
       let Base64 = require("js-base64").Base64;

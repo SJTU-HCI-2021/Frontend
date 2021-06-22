@@ -46,11 +46,24 @@
                   </template>
                   <a-input
                     placeholder="请输入内容"
-                    v-model="SearchInput"
+                    :v-model=SearchInput
                     class="input-with-select"
                     style="border: none; display: inline-block; margin: -8px 20px"
                     @keydown="resetSearch"
                     @keyup.enter.native="search"
+                  />
+                </a-popover>
+                <a-popover title="语音输入键">
+                  <template slot="content">
+                    <p style="width: 300px">
+                      点击该按钮开始语音输入，再点击则结束输入。
+                    </p>
+                  </template>
+                  <a-button
+                    shape="circle"
+                    :icon=recordButtonIcon
+                    @click="recordButtonPress"
+                    style="margin: -8px 10px"
                   />
                 </a-popover>
                 <a-popover title="搜索键">
@@ -94,7 +107,7 @@
         <div class="LeftPart" style="margin-top: 30px">
           <AutoCameraView />
         </div>
-        <Record />
+        <Record ref="record"/>
 
         <div
           class="RightPart"
@@ -171,6 +184,7 @@ export default {
       DetectMode: false,
       columns,
       search_fail: false,
+      recordButtonIcon: "play-circle"
     };
   },
   methods: {
@@ -195,7 +209,17 @@ export default {
       AutoCameraView.resetSearch();
       Global.OutputContent = [];
       this.OutputContent = [];
+      this.SearchInput = "";
     },
+    recordButtonPress() {
+      let record = this.$refs["record"];
+      record.recordButtonPress();
+      if(record.isRecording) { //started record
+        this.recordButtonIcon = "pause";
+      } else { //stopped record
+        this.recordButtonIcon = "play-circle";
+      }
+    }
   }
 };
 </script>
