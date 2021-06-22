@@ -45,14 +45,14 @@
             </template>
             <a-button shape="circle" @click="stopRecord" icon="pause" value="停止" />
           </a-popover>
-          <a-popover title="获取结果按钮" placement="top">
-            <template slot="content">
-              <p style="width: 300px">
-                点击此按钮后将会自动播放播放器中的录音内容，同时会将音频上传至服务器获取语音识别结果，并且对结果进行物体追踪识别。
-              </p>
-            </template>
-            <a-button shape="circle" @click="play" icon="caret-right" value="播放" />
-          </a-popover>
+<!--          <a-popover title="获取结果按钮" placement="top">-->
+<!--            <template slot="content">-->
+<!--              <p style="width: 300px">-->
+<!--                点击此按钮后将会自动播放播放器中的录音内容，同时会将音频上传至服务器获取语音识别结果，并且对结果进行物体追踪识别。-->
+<!--              </p>-->
+<!--            </template>-->
+<!--            <a-button shape="circle" @click="play" icon="caret-right" value="播放" />-->
+<!--          </a-popover>-->
         </div>
       </div>
 
@@ -151,6 +151,7 @@ export default {
       // self.recorder.clear();
       // this.recorder.stop();
       //this.axios.post('')
+      this.play();
     },
 
     get_audio(file) {
